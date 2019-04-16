@@ -111,12 +111,24 @@ func (u *volumeUtil) DeleteContents(fullPath string) error {
 	return utilerrors.NewAggregate(errList)
 }
 
+
 // GetFsCapacityByte returns capacity in bytes about a mounted filesystem.
 // fullPath is the pathname of any file within the mounted filesystem. Capacity
 // returned here is total capacity.
 func (u *volumeUtil) GetFsCapacityByte(fullPath string) (int64, error) {
-	_, capacity, _, _, _, _, err := fs.FsInfo(fullPath)
-	return capacity, err
+//	_, capacity, _, _, _, _, err := fs.FsInfo(fullPath)
+	_, file := filepath.Split(fullPath)
+	arrays := strings.Split(file, "-");
+	if len(arrays) == 1 {
+		return 0,errors.New("faild split path not found '-'") 
+	} else {
+		capas,err := strconv.ParseInt(arrays[1], 10, 64)
+		if err != nil {
+			return 0,err
+		}
+		capas = capas * 1024 * 1024 * 1024
+		return capas,nil
+	}
 }
 
 var _ VolumeUtil = &FakeVolumeUtil{}
