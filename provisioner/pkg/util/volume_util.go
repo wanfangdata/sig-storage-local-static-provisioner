@@ -24,7 +24,6 @@ import (
 	"strings"
 	"strconv"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
-	"k8s.io/kubernetes/pkg/volume/util/fs"
 	"errors"
 )
 
